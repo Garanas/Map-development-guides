@@ -1,0 +1,8 @@
+# no low quality images
+.jpg
+
+# these cannot be read by any website and are huge in file size
+.pds
+
+# automated save files from premiere
+Adobe Premiere Pro Auto-Save/
