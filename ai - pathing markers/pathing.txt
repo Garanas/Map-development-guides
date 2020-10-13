@@ -1,0 +1,207 @@
+### Markers used for movement 
+No movement marker should even be on top of any other marker. Typically you want a distance of about 25 units between movement markers and other markers.
+
+#### Map complexity
+
+#### Air markers
+
+#### Amphibious markers
+
+#### Land markers
+
+#### Navy markers
+
+
+TODO: Refactor / replace / remove the old article
+
+
+### AI Markers
+Markers to assist the pathing of the AI were introduced in Forged Alliance: maps made for Supreme Commander do not have pathing markers. 
+
+![markers.png](/assets/uploads/files/1601575476043-markers.png) 
+_An overview of the map Four-Corners with markers on it_
+
+It allows the AI to do threat analysis and construct paths that attempt to avoid these threats. There are four types of markers:
+ - Land markers (green)
+ - Air markers (teal)
+ - Navy markers (blue)
+ - Amphibious markers (orange)
+
+A common usage is for platoons: a platoon will use the most restricted layer for its pathing. As an example, if a platoon has both land and amphibious units than it will use land markers instead of amphibious markers. Take note that for players the pathing markers are not used. Throughout generating the path the platoon will try and avoid threats that it cannot handle. Think of an tech 1 platoon versing an experimental: its better to avoid it when you can.
+
+For more information on how AI markers are used, make sure to read the 'Under the hood' section.
+
+### Manual marker placement
+You can manually place markers via navigating to Markers -> Markers. Make sure that markers are visible. Make sure that the correct markers are visible inside the editor. You can check so by navigating to 'Markers -> Layers'.
+
+![winter-example.png](/assets/uploads/files/1601575482382-winter-example.png) 
+_An overview of the correct layers being enabled inside the 'Markers -> Layers' window_
+
+It is good practice to only have your the markers visible on which you are currently working, to prevent cluttering the screen.
+
+#### Where to place markers
+
+The idea of markers is to describe the _map complexity_ of the map in more abstract terms. This is quite a sentence, so allow me to elaborate through an image.
+
+![map-complexity.png](/assets/uploads/files/1601575489952-map-complexity.png) 
+_A visualisation of the map complexity of the maps Winter Duel and Hardshield Oasis_
+
+The term 'map complexity' is a term I coined myself to describe how many paths or points of interest one can take or utilize. Markers assist the AI in such a way that these paths are represented on an abstract level and these paths should take the AI to anything remotely interesting on the map. This could be anything from reclaim to mass extractors, expansions or spawn locations.
+
+If you happen to know the real jargon used throughout the (map) design industry with regard to map complexity, please do notify me and I'll update this article correspondingly :) .
+
+#### Placing and connecting markers
+
+Now that we have an idea where markers should be placed we can dive deeper and get practical. You can place pathing markers by navigating to Markers -> Markers and then select the 'Path' marker. Make sure you select the correct type of pathing marker, in our case we are placing land markers.
+
+![winter-example.png](/assets/uploads/files/1601575534057-winter-example.png) 
+_Selecting the correct type of pathing marker that we want to place_
+
+If you hover with your mouse on the terrain a green plus should follow your mouse. If it doesn't, then you haven't selected a marker to place yet. Just click on the terrain to place the marker. Take note that when you place markers 
+
+![marker-not-in-graph.png](/assets/uploads/files/1601575506840-marker-not-in-graph.png) 
+_A bunch of land markers that are not connected_
+
+Markers are by default not connected to any other marker. You can select markers that are on the map by deselecting a marker to place. You can do so by clicking on the highlighted marker again. You can either click and hold shift to select multiple markers, or hold the left mouse button and drag to select a whole bunch of markers. Then you can press:
+ - Press 'C' to connect the markers
+ - Press 'D' to disconnect the markers
+
+If you do not see a line being made between the selected markers, make sure that:
+ - Make sure connections are visible by navigating to 'Markers -> Layers'.
+ - You only have applicable markers selected, e.g. no mass markers.
+ - You only have one type of marker selected, e.g., no land pathing and amphibious pathing markers.
+
+![marker-in-graph.png](/assets/uploads/files/1601575515382-marker-in-graph.png)
+_Markers that in the process of being connected_
+
+From this point on you'd place navy, air and amphibious markers in a similar manner. A few things to keep in mind:
+ - Pathing markers are generally used by platoons. Make sure that whatever paths you describe are wide enough to have a reasonable platoon move through them. If you can't it may be better to leave those paths out or the AI may show inconvenient behavior of platoons in terms of them getting stuck.
+ - Land, navy and amphibious markers should be placed reasonably far away from anything that is not pathable for the respective layer. Think in terms of cliffs, beaches and other things that may cause a reasonable platoon or navy unit issues when approaching it.
+ - Amphibious markers can share the same land and navy markers. This can be easily done in a few clicks once you've placed the land and navy markers. See the next chapter on how this is done.
+
+#### Amphibious markers
+Amphibious markers are a combination of land and navy markers. The easiest approach to them is to just export the land and navy markers all together and import them as amphibious markers.
+
+# TODO
+Navigate to 'Markers -> Layers' and make sure that only the land and navy pathing markers are visible. Select all the land and navy markers. You can freely export them by clicking on the 'Export selected' button. Save them somewhere such that you can find the file. You can name it anything, for the sake of the article we'll name it _article.fafmapmarkers_.
+
+![export-markers.png](/assets/uploads/files/1601575556094-export-markers.png) 
+_If you have a few markers selected the 'Export selected' button is at the bottom of the selection box_
+
+The output of the export is a file with the ._fafmapmarkers_ extension, which is in its core just a _json_ file. You can open it up with any text editor. For this article, we'll use Visual Studio Code but you can do the same in Notepad.
+
+![json.png](/assets/uploads/files/1601575561591-json.png) 
+_The output of the export is an unformatted json file_
+
+Inside the file we want to replace the follow instances into:
+ - _"MarkerType":14_ -> _"MarkerType":17_
+ - _"MarkerType":16_ -> _"MarkerType":17_
+
+Where marker type 14 and 16 are land and navy markers respectively and marker type 17 is an amphibious marker. You can quickly perform these changes by pressing _CTRL + H_ and then replacing the instances accordingly. 
+
+Once completed you can import the file back into the Ozonex editor. Make sure that amphibious markers are toggled in the window 'Markers -> Layers' From this point you can connect the markers of the separate graphs where applicable, e.g. connect them through beaches and ramps into the water. 
+
+### Automatic marker placement
+In some cases automatic marker placement is applicable.
+
+![auto-gen-1.png](/assets/uploads/files/1601575569920-auto-gen-1.png) 
+_Auto generated markers in Winter Duel_
+
+![auto-gen-2.png](/assets/uploads/files/1601575573869-auto-gen-2.png) 
+_Auto generated markers in Bloat_
+
+This can be achieved through a mod and some manual tweaking. The mod that can do this for us is AI-Uveso. Install it through the vault and start your game. Under the game settings, make sure the following are set:
+ - AI Marker Generator -> Print to game.log
+ - DEBUG: AI Pathfinding -> Pathfinding
+
+The latter is optional - it allows you to view the results more easily. You do not have to have any AI's active, do make sure that the mod itself is active.
+
+![settings.png](/assets/uploads/files/1601575581725-settings.png) 
+_An overview of the settings required_
+
+From here on you can start the game - the game may take significantly longer to load. This is due the generation of the markers and storing them inside the logs such that you can access them. Once the game has started you can open up the logging window. You can find your hotkey preset in the help menu via pressing 'F1'.
+
+![find-debug-window.png](/assets/uploads/files/1601575588911-find-debug-window.png) 
+_The key bindings window_
+
+Search for 'log window' and determine your hotkey. Then close the key bindings window and use the hotkey to open up the Moholog. A few notes about the Moholog:
+ - The Moholog window can hide underneath the game window
+ - The Moholog window isn't that great and has many quirks.
+
+Once you have opened the Moholog window you can search for the output of the generation that took place. It starts with this message:
+```
+INFO: * AI-Uveso: [siminit.lua, line:2070] - Running from: @c:\programdata\faforever\gamedata\lua.nx2\lua\siminit.lua.
+INFO: * AI-Uveso: [siminit.lua, line:2071] - Checking directory /mods/ for AI-Uveso...
+INFO: * AI-Uveso: [siminit.lua, line:2078] - Found directory: /mods/ai-uveso/mod_info.lua.
+INFO: * AI-Uveso: [siminit.lua, line:2083] - Check OK. Found 1 AI-Uveso directory.
+INFO: * AI-Uveso: [siminit.lua, line:2087] - Checking files and filesize for AI-Uveso...
+INFO: * AI-Uveso: [siminit.lua, line:2114] - Check OK! files: 84, bytecount: 1550735.
+```
+
+And it should have contents that starts and ends with similar content to:
+
+```
+         ['Amphibious27-6'] = {   
+	   ['type'] = STRING( 'Air Path Node' ),
+           ['position'] = VECTOR3( 512.00006103516, 70.2265625, 580.26672363281 ),
+           ['orientation'] = VECTOR3( 0, 0, 0 ),
+           ['hint'] = BOOLEAN( true ),
+           ['graph'] = STRING( 'DefaultAir' ),
+           ['adjacentTo'] = STRING( 'Air7-7 Air8-7 Air6-8 Air8-8 Air7-9 Air8-9 Air6-9 Air6-7' ),
+           ['color'] = STRING( 'ffffffff' ),
+           ['prop'] = STRING( '/env/common/props/markers/M_Path_prop.bp' ),
+         },
+         ['Land1-9'] = {
+           ['type'] = STRING( 'Land Path Node' ),
+           ['position'] = VECTOR3( 51.200004577637, 106.39488983154, 324.26669311523 ),
+           ['orientation'] = VECTOR3( 0, 0, 0 ),
+           ['hint'] = BOOLEAN( true ),
+           ['graph'] = STRING( 'DefaultLand' ),
+           ['adjacentTo'] = STRING( 'Land1-10 Land2-10 Land1-8 Land2-8' ),
+           ['color'] = STRING( 'fff4a460' ),
+           ['prop'] = STRING( '/env/common/props/markers/M_Path_prop.bp' ),
+         },
+
+         (...)
+
+         ['Land20-9'] = {
+           ['type'] = STRING( 'Land Path Node' ),
+           ['position'] = VECTOR3( 699.73333740234, 77.709899902344, 324.26669311523 ),
+           ['orientation'] = VECTOR3( 0, 0, 0 ),
+           ['hint'] = BOOLEAN( true ),
+           ['graph'] = STRING( 'DefaultLand' ),
+           ['adjacentTo'] = STRING( 'Land19-9 Land21-9 Land21-10 Land19-10 Land19-8 Land21-8' ),
+           ['color'] = STRING( 'fff4a460' ),
+           ['prop'] = STRING( '/env/common/props/markers/M_Path_prop.bp' ),
+         },
+       },
+     },
+   },
+
+```
+
+Copy the information up to the very end into Notepad or any other text editing software. We need to clean up the 'INFO:' tags in order to make it useful to us. Once inside Notpad use 'CTRL + H' to search for 'INFO:' and replace it with an empty string. This will result into the table of information that we need.
+
+![copy-it.png](/assets/uploads/files/1598887717950-copy-it.png) 
+_Replacing the 'INFO:' in any text editor into an empty string_
+
+From here on we need to locate the _%map%_save.lua_ file that corresponds to the map that we generated the markers for. In the article the markers were generated for the map 'Cinder'. Navigate towards your map and **make a backup**, then open its '_save.lua' file.
+
+![cinder.png](/assets/uploads/files/1601575597953-cinder.png) 
+_Open up the _'%map%_save.lua'_ file, in this article that is _'cinder_save.lua'_
+
+We want to replace the entire master chain with the contents of the log that we tweaked. This is slightly error prone but can be easily done. Copy the contents of the tweaked log to your clipboard. Select from the opening bracket of the Masterchain all the way to the closing bracket, remove it and then paste the contents of the clipboard.
+
+Todo: ERROR: copy from the { of Markers = {, instead of from the masterchain itself
+![select.png](/assets/uploads/files/1601575606777-select.png) 
+_Select and replace the contents in your text editor_
+
+Once changed save your file and open it in the Ozonex editor. If all is good then you'll see your freshly placed pathing markers right there in the editor.
+
+TODO
+
+### Under the hood
+
+#### Efficiency
+
+#### Avoiding threats
